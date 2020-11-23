@@ -1,0 +1,10 @@
+{
+  "realm": "${keycloak.realm}",
+  "auth-server-url": "${keycloak.auth-server-url}",
+  "ssl-required": "external",
+  "bearer-only": true,
+  "use-resource-role-mappings" : true,
+  "enable-cors": true,
+  "resource": "pilotojee7-backend",
+  "realm-public-key": "${keycloak.realm-public-key}"
+}

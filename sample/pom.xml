@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.edilsonmendes.springbootangular</groupId>
+		<artifactId>celerio-springboot-angular</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>sample</artifactId>
+	<packaging>pom</packaging>
+	<name>sample</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<version.server.bom>7.1.0.GA</version.server.bom>
+		<version.jboss.spec.javaee.7.0>1.1.0.Final-redhat-3</version.jboss.spec.javaee.7.0>
+		
+		<version.wildfly.maven.plugin>1.2.0.Beta1</version.wildfly.maven.plugin>
+
+		<!-- other plugin versions -->
+		<version.compiler.plugin>3.6.1</version.compiler.plugin>
+		<version.surefire.plugin>2.18.1</version.surefire.plugin>
+		<version.war.plugin>2.6</version.war.plugin>
+
+		<!-- maven-compiler-plugin -->
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+
+		<!-- Frameworks -->
+		<version.framework>${project.parent.version}</version.framework>
+
+		<!-- Versoes de dependencias gerais -->
+		<version.solrj>4.10.4</version.solrj>
+		<version.commons-logging>1.2</version.commons-logging>
+		<version.commons-lang3>3.5</version.commons-lang3>
+		<version.commons-codec>1.10</version.commons-codec>
+		<version.commons-io>2.5.0.redhat-2</version.commons-io>
+		<version.commons-beanutils>1.9.2</version.commons-beanutils>
+		<version.bcprov-jdk16>1.46</version.bcprov-jdk16>
+		<version.bcmail-jdk16>1.46</version.bcmail-jdk16>
+		<version.httpclient>4.5.2.redhat-1</version.httpclient>
+		<version.httpcore>4.4</version.httpcore>
+		<version.jackson>2.5.4</version.jackson>
+		<version.guava>20.0.0.redhat-1</version.guava>
+		<version.slf4j>1.7.7</version.slf4j>
+		
+		<version.gson>2.7</version.gson>
+		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
+		<version.caelum-stella>2.1.2</version.caelum-stella>
+		<version.keycloak>3.1.0.Final</version.keycloak>
+
+		<!-- Aplication Properties -->
+		<dataSource.jndiName>java:jboss/datasources/pilotojee7DataSource</dataSource.jndiName>
+		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
+		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
+		<componentLookup.class>br.jus.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+		
+		<server-group-name>srg-${project.artifactId}</server-group-name>
+
+		<!-- Celerio -->
+		<celerio-maven-plugin.version>4.0.23</celerio-maven-plugin.version>
+		
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${version.commons-io}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.commons-logging}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.commons-lang3}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${version.httpclient}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>${version.httpcore}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${version.httpclient}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.yaml</groupId>
+    			<artifactId>snakeyaml</artifactId>
+    			<version>1.19</version>
+    			<scope>provided</scope>
+			</dependency>
+            <!-- JBoss distributes a complete set of Java EE APIs including a Bill
+                of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection)
+                of artifacts. We use this here so that we always get the correct versions
+                of artifacts. Here we use the jboss-eap-javaee7-with-tools stack (you can
+                read this as the JBoss stack of the Java EE APIs, with some extras tools
+                for your project, such as Arquillian for testing) -->
+            <dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-eap-javaee7-with-tools</artifactId>
+                <version>${version.server.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Define the version of the JBoss Java EE APIs we want to use -->
+            <!-- JBoss distributes a complete set of Java EE APIs including
+               a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or
+               a collection) of artifacts. We use this here so that we always get the correct
+               versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
+               read this as the JBoss stack of the Java EE APIs). You can actually
+               use this stack with any version of JBoss EAP that implements Java EE. -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>${version.jboss.spec.javaee.7.0}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>h2</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+
+				<!-- Driver properties -->
+				<h2.version>1.4.187</h2.version>
+				<jdbc.groupId>com.h2database</jdbc.groupId>
+				<jdbc.artifactId>h2</jdbc.artifactId>
+				<jdbc.version>${h2.version}</jdbc.version>
+				<jdbc.driver>org.h2.Driver</jdbc.driver>
+				
+				<!-- Database properties -->			
+				<!--<jdbc.url>jdbc:h2:${project.build.directory}/db/angulardb;MVCC=TRUE;FILE_LOCK=NO</jdbc.url>-->
+				<jdbc.url>jdbc:h2:~/angulardb;MVCC=TRUE;FILE_LOCK=NO</jdbc.url>
+				<jdbc.user>sa</jdbc.user>
+				<jdbc.password></jdbc.password>
+				<jdbc.schema></jdbc.schema>
+				<jdbc.catalog></jdbc.catalog>
+				<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
+				<sql-maven-plugin.delimiter>;</sql-maven-plugin.delimiter>
+				<sql.create.script>01-create.sql</sql.create.script>
+
+			</properties>
+		</profile>
+		
+
+		<!-- Profiles below are used when Celerio Maven Plugin is present in the build process -->
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Drop and recreate the database -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>db</id>
+			<build>
+				<defaultGoal>initialize</defaultGoal>
+				<plugins>
+					<plugin>
+						<!-- http://mojo.codehaus.org/sql-maven-plugin/ -->
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>1.5</version>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>Create and initialize the database</id>
+								<phase>initialize</phase>
+								<configuration>
+									<driver>${jdbc.driver}</driver>
+									<url>${jdbc.url}</url>
+									<username>${jdbc.user}</username>
+									<password>${jdbc.password}</password>
+									<autocommit>true</autocommit>
+									<encoding>UTF-8</encoding>
+									<printResultSet>true</printResultSet>
+									<onError>continue</onError>
+									<delimiter>${sql-maven-plugin.delimiter}</delimiter>
+									<orderFile>ascending</orderFile>
+									<fileset>
+										<basedir>${project.basedir}/..</basedir>
+										<includes>
+											<include>config/sql/${sql.create.script}</include>
+										</includes>
+									</fileset>
+								</configuration>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>${jdbc.groupId}</groupId>
+								<artifactId>${jdbc.artifactId}</artifactId>
+								<version>${jdbc.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Extract the database metadata -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>metadata</id>
+			<build>
+				<defaultGoal>generate-sources</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>com.jaxio.celerio</groupId>
+						<artifactId>dbmetadata-maven-plugin</artifactId>
+						<version>${celerio-maven-plugin.version}</version>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>Extract the database schema.</id>
+								<goals>
+									<goal>extract-metadata</goal>
+								</goals>
+								<configuration>
+									<targetFilename>${project.basedir}/config/celerio-maven-plugin/metadata.xml</targetFilename>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>${jdbc.groupId}</groupId>
+								<artifactId>${jdbc.artifactId}</artifactId>
+								<version>${jdbc.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Delete code generated by Celerio -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>cleanGen</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.jaxio.celerio</groupId>
+						<artifactId>celerio-maven-plugin</artifactId>
+						<version>${celerio-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>Delete previously generated files (use .celerio/ folder)</id>
+								<goals>
+									<goal>cleanGenerated</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<modules>
+		<module>sample-backend</module>
+	</modules>
+	
+	
+</project>

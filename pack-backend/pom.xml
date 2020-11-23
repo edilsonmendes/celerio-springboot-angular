@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+		<groupId>com.github.edilsonmendes.springbootangular</groupId>
+		<artifactId>celerio-springboot-angular</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>pack-backend</artifactId>
+	<name>pack-backend</name>
+	<description>Pack de templates dos artefatos do backend</description>
+
+    <build>
+        <resources> 
+			<resource>
+                <directory>celerio</directory>
+                <filtering>false</filtering>
+                <targetPath>celerio</targetPath>
+            </resource>
+            <resource>
+                <directory>META-INF</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>celerio-pack.xml</include>
+                </includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
+        </resources>
+        
+    </build>
+
+</project>
